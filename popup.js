@@ -1,7 +1,15 @@
-document.addEventListener("DOMContentLoaded", function() {
+document.addEventListener("DOMContentLoaded", function () {
     function showPopup() {
-        document.getElementById("emailPopupOverlay").style.display = "block";
-        document.getElementById("emailPopup").style.display = "block";
+        let popup = document.getElementById("emailPopup");
+        let overlay = document.getElementById("emailPopupOverlay");
+
+        // Move the pop-up to the end of <body> so it's on the highest layer
+        document.body.appendChild(popup);
+        document.body.appendChild(overlay);
+
+        // Display the pop-up & overlay
+        overlay.style.display = "block";
+        popup.style.display = "block";
     }
 
     function closePopup() {
@@ -13,7 +21,7 @@ document.addEventListener("DOMContentLoaded", function() {
     setTimeout(showPopup, 5000);
 
     // Exit Intent Trigger
-    document.addEventListener("mouseout", function(event) {
+    document.addEventListener("mouseout", function (event) {
         if (event.clientY < 10) {
             showPopup();
         }
@@ -21,28 +29,4 @@ document.addEventListener("DOMContentLoaded", function() {
 
     // Close Pop-up
     document.getElementById("popupClose").addEventListener("click", closePopup);
-    document.getElementById("emailPopupOverlay").addEventListener("click", closePopup);
-
-    // Handle Form Submission
-    document.getElementById("popupEmailForm").addEventListener("submit", function(event) {
-        event.preventDefault();
-        
-        var email = document.getElementById("popupEmailInput").value;
-
-        fetch("https://api.iterable.com/api/users/subscribe", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-                "Api-Key": "YOUR_ITERABLE_API_KEY"
-            },
-            body: JSON.stringify({ email: email })
-        })
-        .then(response => response.json())
-        .then(data => {
-            alert("Thank you for subscribing!");
-            document.getElementById("popupEmailInput").value = "";
-            closePopup();
-        })
-        .catch(error => console.error("Error:", error));
-    });
-});
+    document.getElementById("emailPopupOverlay").addEventListener("click", closePo
